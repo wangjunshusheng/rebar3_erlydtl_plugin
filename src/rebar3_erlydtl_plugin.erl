@@ -129,7 +129,7 @@ expand_opts(Opts) ->
     lists:map(fun(X) -> lists:ukeymerge(1, proplists:unfold(X), SharedOpts) end, OptsLists).
 
 do(State) ->
-    rebar_api:info("Running erlydtl... State:~p", [State]),
+    rebar_api:info("Running erlydtl...", []),
     Apps = case rebar_state:current_app(State) of
                undefined ->
                    rebar_state:project_apps(State);
@@ -149,6 +149,7 @@ do(State) ->
              DtlOpts3 = [{custom_tags_dir, TagDir} | proplists:delete(custom_tags_dir, DtlOpts2)],
              filelib:ensure_dir(filename:join(OutDir, "dummy.beam")),
 
+             rebar_api:info("DtlOpts:~p", [DtlOpts]),
              rebar_base_compiler:run(Opts,
                                      [],
                                      TemplateDir,
@@ -205,7 +206,7 @@ do_compile(Source, Target, DtlOpts, Dir, OutDir) ->
     %% ensure that doc_root and out_dir are defined,
     %% using defaults if necessary
     Opts = lists:ukeymerge(1, DtlOpts, Sorted),
-    rebar_api:debug("Compiling \"~s\" -> \"~s\" with options:~n    ~s",
+    rebar_api:info("Compiling \"~s\" -> \"~s\" with options:~n    ~s",
                     [Source, Target, io_lib:format("~p", [Opts])]),
     case erlydtl:compile_file(ec_cnv:to_list(Source),
                               list_to_atom(module_name(Target)),
@@ -255,7 +256,7 @@ referenced_dtls1(Step, DtlOpts, Seen) ->
            end || F <- Step]),
     DocRoot = option(doc_root, DtlOpts),
     WithPaths = [ filename:join([DocRoot, F]) || F <- AllRefs ],
-    rebar_api:debug("All deps: ~p\n", [WithPaths]),
+    rebar_api:info("All deps: ~p\n", [WithPaths]),
     Existing = [F || F <- WithPaths, filelib:is_regular(F)],
     New = sets:subtract(sets:from_list(Existing), Seen),
     case sets:size(New) of
