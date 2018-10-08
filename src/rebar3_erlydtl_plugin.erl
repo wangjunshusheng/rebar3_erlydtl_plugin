@@ -210,6 +210,9 @@ do_compile(Source, Target, DtlOpts, Dir, OutDir) ->
     Opts = lists:ukeymerge(1, DtlOpts, Sorted),
     rebar_api:info("Compiling \"~s\" -> \"~s\" with options:~n    ~s",
                     [Source, Target, io_lib:format("~p", [Opts])]),
+
+    rebar_api:info("First:~p Sendond:~p Options:~p", [ec_cnv:to_list(Source), list_to_atom(module_name(Target)), Opts]),
+
     case erlydtl:compile_file(ec_cnv:to_list(Source),
                               list_to_atom(module_name(Target)),
                               Opts) of
