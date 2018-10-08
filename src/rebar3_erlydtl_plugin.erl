@@ -217,12 +217,16 @@ do_compile(Source, Target, DtlOpts, Dir, OutDir) ->
                               list_to_atom(module_name(Target)),
                               Opts) of
         {ok, _Mod} ->
+            rebar_api:info("ok:~p", [_Mod]),
             ok;
         {ok, _Mod, Ws} ->
+            rebar_api:info("ok:~p Ws:~p", [_Mod, Ws]),
             rebar_base_compiler:ok_tuple(Source, Ws);
         error ->
+            rebar_api:info("error", []),
             rebar_base_compiler:error_tuple(Source, [], [], Opts);
         {error, Es, Ws} ->
+            rebar_api:info("error Es:~p Ws:~p", [Es, Ws]),
             rebar_base_compiler:error_tuple(Source, Es, Ws, Opts)
     end.
 
