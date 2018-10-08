@@ -211,11 +211,11 @@ do_compile(Source, Target, DtlOpts, Dir, OutDir) ->
     rebar_api:info("Compiling \"~s\" -> \"~s\" with options:~n    ~s",
                     [Source, Target, io_lib:format("~p", [Opts])]),
 
-    rebar_api:info("First:~p Sendond:~p Options:~p", [ec_cnv:to_list(Source), list_to_atom(module_name(Target)), Opts]),
+    rebar_api:info("First:~p Sendond:~p Options:~p usort:~p", [ec_cnv:to_list(Source), list_to_atom(module_name(Target)), Opts, lists:usort(Opts)]),
 
     case erlydtl:compile_file(ec_cnv:to_list(Source),
                               list_to_atom(module_name(Target)),
-                              Opts) of
+                              lists:usort(Opts)) of
         {ok, _Mod} ->
             rebar_api:info("ok:~p", [_Mod]),
             ok;
