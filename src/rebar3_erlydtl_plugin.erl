@@ -188,8 +188,10 @@ default(recursive) -> true.
 compile_dtl(_, Source, Target, DtlOpts, Dir, OutDir) ->
     case needs_compile(Source, Target, DtlOpts) of
         true ->
+            rebar_api:info("1111111~n", []),
             do_compile(Source, Target, DtlOpts, Dir, OutDir);
         false ->
+            rebar_api:info("2222222~n", []),
             skipped
     end.
 
